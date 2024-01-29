@@ -38,6 +38,19 @@ public class UserService {
 		findById(id);
 		rep.deleteById(id);
 	}
+	//atualização de um dado
+	public User update(User obj) { //dados da requisição
+		User newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return rep.save(newObj);
+		}
+	
+	private void updateData(User newObj, User obj) { //implementação do metodo
+		newObj.setName(obj.getName());
+		newObj.setEmail(obj.getEmail());
+		
+		
+	}
 	public User fromDTO(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
 	}
