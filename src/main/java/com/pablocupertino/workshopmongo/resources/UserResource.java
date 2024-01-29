@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pablocupertino.workshopmongo.domain.Post;
 import com.pablocupertino.workshopmongo.domain.User;
 import com.pablocupertino.workshopmongo.dto.UserDTO;
 import com.pablocupertino.workshopmongo.services.UserService;
@@ -69,6 +70,13 @@ public class UserResource {
 			obj = service.update(obj);
 			return ResponseEntity.noContent().build();
 			
+		}
+		@RequestMapping( value = "/{id}/posts", method = RequestMethod.GET)
+		public ResponseEntity <List<Post>> findPosts(@PathVariable String id) {
+			//Instanciar um objeto usuario
+			User obj =service.findById(id);
+			//Gera a resposta
+			return ResponseEntity.ok().body(obj.getPosts());//retorna a lista de posts associada ao usuario 
 		}
 		
 
