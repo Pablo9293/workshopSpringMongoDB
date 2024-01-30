@@ -1,5 +1,6 @@
 package com.pablocupertino.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,33 @@ public class PostResource {
 		// Gera a resposta
 		return ResponseEntity.ok().body(obj);
 	}
-	
-	//endpoint para realizar a busca
-	
+
+	// endpoint para realizar a busca
+
 	@RequestMapping(value = "/titlesearch", method = RequestMethod.GET)
-	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text" , defaultValue = "") String text) {
-		
+	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+
 		text = URL.decodePara(text);
 		List<Post> list = service.findByTitle(text);
-		
+
 		return ResponseEntity.ok().body(list);
 	}
-	
 
+	@RequestMapping(value = "/fullsearch", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> fullSearch(
+			@RequestParam(value = "text", defaultValue = "") String text,
+			@RequestParam(value = "minDate", defaultValue = "") String minDate,
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate){
+			
+
+		text = URL.decodePara(text);
+		//Tratar a data minima
+		Date min = URL.converteDate(minDate, new Date(0L)); // data minima do java se  der problema
+		//tratar a data maxima
+		Date max = URL.converteDate(maxDate, new Date()); // data atual do sistema se der problema
+		
+		List<Post> list = service.fullSearch(text, min , max);
+
+		return ResponseEntity.ok().body(list);
+	}
 }
